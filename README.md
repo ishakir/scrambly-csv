@@ -1,14 +1,14 @@
-[![Build Status](https://travis-ci.org/ishakir/DSON.svg)](https://travis-ci.org/ishakir/DSON)
-[![Code Climate](https://codeclimate.com/github/ishakir/DSON.png)](https://codeclimate.com/github/ishakir/DSON)
-# DSON
+[![Build Status](https://travis-ci.org/ishakir/scrambly-csv.svg)](https://travis-ci.org/ishakir/scrambly-csv)
+[![Code Climate](https://codeclimate.com/github/ishakir/scrambly-csv.png)](https://codeclimate.com/github/ishakir/scrambly-csv)
+# Scrambly CSV
 
-Such serialization now also parsing! Totally pure-ruby also completely DSON. Wow!
+Ever got fed up with your users using bad practises to read your CSV files? I certainly have! This library will fix all those problems by writing CSV files in a way that ensures bet practices on the part of the reader. Whoever said people know what's best for them, eh?
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'DSON'
+    gem 'scrambly-csv'
 
 And then execute:
 
@@ -16,45 +16,28 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install DSON
+    $ gem install scrambly-csv
 
 ## Usage
 
-**Serialization**
-
-Currently supports a ruby object, hash and array data structure and outputs it's representation in DSON ([Doge Serialized Object notation](http://dogeon.org/)). By way of an example, try:
-
-    require 'DSON'
-
-    puts DSON.such_serialize_wow({
-      ruby: 'pure',
-      supports: [
-        'hash',
-        'array'
-      ]
-    })
-
-This should output:
-
-    such "ruby" is "pure", "supports" is so "hash" also "array" many wow
-
-Correct to the DSON spec.
-
-Try it out with custom ruby objects too!
-
-**Parsing**
-
-Currently should parse a DSON object given as a string. Not the world's best put together parser but should function reasonably with general DSON strings. Try:
-
-    require 'DSON'
-
-    puts DSON.so_parse(
-      'such "ruby" is "pure", "supports" is so "hash" also "array" many wow'
-    )
+    file = Tempfile.new('foo')
+      CSV.open(file.path, 'wb') do |csv|
+        writer = ScramblyCsv::Scrambly.new(csv, ["one", "two", "three", "four"])
+        writer.write([1, 2, 3, 4])
+        writer.write([5, 6, 7, 8])
+        writer.write([9, 10, 11, 12])
+      end
+    puts file.path 
 
 ## Contributing
 
-I would love it if someone could contribute a pretty printer!
+There are other features that need to implemented to save people from themselves:
+
+1. Ensure that users can't just split on comma (difficult!)
+2. Randomly quote some elements but not others
+3. Add random escape charaters
+
+In order to contribute:
 
 1. Fork it ( https://github.com/ishakir/DSON/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
